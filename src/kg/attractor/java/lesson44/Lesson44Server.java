@@ -26,8 +26,8 @@ public class Lesson44Server extends BasicServer {
         registerGet("/sample", this::freemarkerSampleHandler);
         registerGet("/employees", this::employeesHandler);
         registerGet("/book/.*", this::bookDetailsHandler);
-        registerGet("/library", this::booksHandler);
-        registerGet("/employee/1", this::employeeDetailsHandler);
+        registerGet("/books", this::booksHandler);
+        registerGet("/employee/.*", this::employeeDetailsHandler);
     }
 
     private static Configuration initFreeMarker() {

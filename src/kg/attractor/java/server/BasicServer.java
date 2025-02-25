@@ -154,6 +154,10 @@ public abstract class BasicServer {
             if (route.startsWith("GET /book/") && path.matches("/book/\\d+")) {
                 return entry.getValue();
             }
+
+            if (route.startsWith("GET /employee/") && path.matches("/employee/\\d+")) {
+                return entry.getValue();
+            }
         }
         return null;
     }
