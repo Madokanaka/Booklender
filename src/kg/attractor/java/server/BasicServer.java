@@ -2,6 +2,9 @@ package kg.attractor.java.server;
 
 import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpServer;
+import kg.attractor.java.lesson44.models.Book;
+import kg.attractor.java.lesson44.models.Employee;
+import kg.attractor.java.lesson44.util.JsonUtil;
 
 import java.io.IOException;
 import java.io.OutputStream;
@@ -131,8 +134,6 @@ public abstract class BasicServer {
 
     private void handleIncomingServerRequests(HttpExchange exchange) {
         String path = exchange.getRequestURI().getPath();
-        String method = exchange.getRequestMethod();
-        String key = makeKey(method, path);
 
         RouteHandler route = getRoutes().get(makeKey(exchange));
 
@@ -146,20 +147,27 @@ public abstract class BasicServer {
                 respond404(exchange);
             }
         }
-//        var route = getRoutes().getOrDefault(makeKey(exchange), this::respond404);
-//        route.handle(exchange);
     }
 
     private RouteHandler findDynamicRoute(String path) {
         for (Map.Entry<String, RouteHandler> entry : getRoutes().entrySet()) {
             String route = entry.getKey();
 
-            if (route.startsWith("GET /book/") && path.matches("/book/\\d+")) {
-                return entry.getValue();
+            if (route.startsWith("GET /book/") && path.matches("/book/\\d+"))
+            {
+                int bookId = Integer.parseInt(path.substring(path.lastIndexOf("/") + 1));
+                Book book = JsonUtil.getBookById(bookId);
+                if (book != null) {
+                    return entry.getValue();
+                }
             }
 
             if (route.startsWith("GET /employee/") && path.matches("/employee/\\d+")) {
-                return entry.getValue();
+                int employeeId = Integer.parseInt(path.substring(path.lastIndexOf("/") + 1));
+                Employee employee = JsonUtil.getEmployeeById(employeeId);
+                if (employee != null) {
+                    return entry.getValue();
+                }
             }
         }
         return null;
