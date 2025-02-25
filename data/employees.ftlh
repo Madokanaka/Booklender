@@ -11,7 +11,7 @@
 <ul>
     <#list employees as employee>
         <li>
-            ${employee.name} - ${employee.position}
+            <a href="/employee/${employee.id}">${employee.name} - ${employee.position}</a>
             <ul>
                 <li><strong>Текущие книги:</strong>
                     <#list employee.currentBooks as bookId>
