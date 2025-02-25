@@ -1,0 +1,30 @@
+[
+  {
+    "id": 1,
+    "name": "Иван Иванов",
+    "position": "Разработчик",
+    "currentBooks": [1, 3, 7],
+    "pastBooks": [2, 4]
+  },
+  {
+    "id": 2,
+    "name": "Петр Петров",
+    "position": "Менеджер",
+    "currentBooks": [4, 6],
+    "pastBooks": [1, 5, 9]
+  },
+  {
+    "id": 3,
+    "name": "Марина Васильева",
+    "position": "Системный архитектор",
+    "currentBooks": [10, 12],
+    "pastBooks": [2, 11]
+  },
+  {
+    "id": 4,
+    "name": "Сергей Козлов",
+    "position": "QA-инженер",
+    "currentBooks": [8, 13],
+    "pastBooks": [3, 7, 5]
+  }
+]
