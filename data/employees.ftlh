@@ -5,23 +5,25 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Список сотрудников</title>
+    <link rel="stylesheet" href="/css/styleOfPages.css">
 </head>
 <body>
-<h1>Сотрудники</h1>
-<ul>
-    <#list employees as employee>
-        <li>
-            <a href="/employee/${employee.id}">${employee.name} - ${employee.position}</a>
-            <ul>
-                <li><strong>Текущие книги:</strong>
+<div class="container">
+    <h1>Сотрудники</h1>
+    <ul class="employee-list">
+        <#list employees as employee>
+            <li class="employee-item">
+                <a href="/employee/${employee.id}" class="employee-link">${employee.name} - ${employee.position}</a>
+                <ul class="book-list">
+                    <li><strong>Текущие книги:</strong></li>
                     <#list employee.currentBooks as bookId>
                         <#assign book = books[bookId-1]>
-                        <div>${book.title}</div>
+                        <li class="book-item">${book.title}</li>
                     </#list>
-                </li>
-            </ul>
-        </li>
-    </#list>
-</ul>
+                </ul>
+            </li>
+        </#list>
+    </ul>
+</div>
 </body>
 </html>
