@@ -66,6 +66,7 @@ public abstract class BasicServer {
         registerFileHandler(".html", ContentType.TEXT_HTML);
         registerFileHandler(".jpg", ContentType.IMAGE_JPEG);
         registerFileHandler(".png", ContentType.IMAGE_PNG);
+        registerFileHandler(".ftlh", ContentType.TEXT_FTLH);
     }
 
     protected final void registerGet(String route, RouteHandler handler) {

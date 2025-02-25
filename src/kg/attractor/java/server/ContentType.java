@@ -5,7 +5,9 @@ public enum ContentType {
     TEXT_HTML("text/html; charset=utf-8"),
     TEXT_CSS("text/css"),
     IMAGE_JPEG("image/jpeg"),
-    IMAGE_PNG("image/png");
+    IMAGE_PNG("image/png"),
+    TEXT_FTLH("text/html");
+
 
     private final String descr;
 
