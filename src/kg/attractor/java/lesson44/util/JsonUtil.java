@@ -58,5 +58,13 @@ public class JsonUtil {
         List<Book> books = readBooksFromFile();
         return books.stream().filter(book -> book.getId() == id).findFirst().orElse(null);
     }
+
+    public static Employee getEmployeeById(int id) {
+        List<Employee> employees = readEmployeesFromFile();
+        return employees.stream()
+                .filter(emp -> emp.getId() == id)
+                .findFirst()
+                .orElse(null);
+    }
 }
 

@@ -26,8 +26,8 @@ public class Lesson44Server extends BasicServer {
         registerGet("/sample", this::freemarkerSampleHandler);
         registerGet("/employees", this::employeesHandler);
         registerGet("/book/.*", this::bookDetailsHandler);
-
         registerGet("/library", this::booksHandler);
+        registerGet("/employee/1", this::employeeDetailsHandler);
     }
 
     private static Configuration initFreeMarker() {
@@ -62,10 +62,8 @@ public class Lesson44Server extends BasicServer {
 
 
     private void bookDetailsHandler(HttpExchange exchange) {
-        System.out.println("dafaf");
         String path = exchange.getRequestURI().getPath();
         int bookId = Integer.parseInt(path.substring(path.lastIndexOf("/") + 1));
-        System.out.println(bookId);
         Book book = JsonUtil.getBookById(bookId);
         Map<String, Object> dataModel = new HashMap<>();
         dataModel.put("book", book);
@@ -129,4 +127,26 @@ public class Lesson44Server extends BasicServer {
         ));
         return data;
     }
+
+    private void employeeDetailsHandler(HttpExchange exchange) {
+        String path = exchange.getRequestURI().getPath();
+        int employeeId = Integer.parseInt(path.substring(path.lastIndexOf("/") + 1));
+
+        Employee employee = JsonUtil.getEmployeeById(employeeId);
+        List<Book> currentBooks = employee.getCurrentBooks().stream()
+                .map(JsonUtil::getBookById)
+                .toList();
+
+        List<Book> pastBooks = employee.getPastBooks().stream()
+                .map(JsonUtil::getBookById)
+                .toList();
+
+        Map<String, Object> dataModel = new HashMap<>();
+        dataModel.put("employee", employee);
+        dataModel.put("currentBooks", currentBooks);
+        dataModel.put("pastBooks", pastBooks);
+
+        renderTemplate(exchange, "employee.ftlh", dataModel);
+    }
+
 }

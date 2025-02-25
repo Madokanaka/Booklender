@@ -1,37 +1,37 @@
 [
   {
     "id": 1,
-    "title": "Программирование на Java",
-    "author": "Иван Петров",
+    "title": "Clean Code",
+    "author": "Robert C. Martin",
     "available": true,
-    "imagePath": "images/java_programming.jpg"
+    "imagePath": "https://m.media-amazon.com/images/I/51E2055ZGUL.jpg"
   },
   {
     "id": 2,
-    "title": "Основы алгоритмов",
-    "author": "Мария Сидорова",
+    "title": "The Pragmatic Programmer",
+    "author": "Andrew Hunt, David Thomas",
     "available": false,
-    "imagePath": "images/algorithms_basics.jpg"
+    "imagePath": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSvpVYaJ2clBPnAgpBI_mfOrwMzbBfvB3M5bg&s"
   },
   {
     "id": 3,
-    "title": "Мифы о программировании",
-    "author": "Алексей Ковалев",
+    "title": "Design Patterns: Elements of Reusable Object-Oriented Software",
+    "author": "Erich Gamma, Richard Helm, Ralph Johnson, John Vlissides",
     "available": true,
-    "imagePath": "images/myths_about_programming.jpg"
+    "imagePath": "https://m.media-amazon.com/images/I/81IGFC6oFmL._AC_UF1000,1000_QL80_.jpg"
   },
   {
     "id": 4,
-    "title": "Современный подход к разработке",
-    "author": "Юлия Васильева",
+    "title": "Refactoring: Improving the Design of Existing Code",
+    "author": "Martin Fowler",
     "available": true,
-    "imagePath": "images/modern_approach_to_development.jpg"
+    "imagePath": "https://m.media-amazon.com/images/I/71e6ndHEwqL._AC_UF1000,1000_QL80_.jpg"
   },
   {
     "id": 5,
-    "title": "Введение в искусственный интеллект",
-    "author": "Дмитрий Николаев",
+    "title": "Artificial Intelligence: A Modern Approach",
+    "author": "Stuart Russell, Peter Norvig",
     "available": false,
-    "imagePath": "images/ai_intro.jpg"
+    "imagePath": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS7GPBLv29ShBHq7NZno-7IBHYSkmQiaG8_vw&s"
   }
 ]
