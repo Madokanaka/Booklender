@@ -1,0 +1,42 @@
+[
+  {
+    "id": 1,
+    "title": "Clean Code",
+    "author": "Robert C. Martin",
+    "available": true,
+    "imagePath": "https://m.media-amazon.com/images/I/51E2055ZGUL.jpg",
+    "description": "A guide to writing clean, efficient, and maintainable code. It covers best practices for software development and emphasizes readability and simplicity."
+  },
+  {
+    "id": 2,
+    "title": "The Pragmatic Programmer",
+    "author": "Andrew Hunt, David Thomas",
+    "available": false,
+    "imagePath": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSvpVYaJ2clBPnAgpBI_mfOrwMzbBfvB3M5bg&s",
+    "description": "A comprehensive guide to becoming a better software developer. It covers a wide range of topics, from practical programming tips to effective collaboration strategies."
+  },
+  {
+    "id": 3,
+    "title": "Design Patterns: Elements of Reusable Object-Oriented Software",
+    "author": "Erich Gamma, Richard Helm, Ralph Johnson, John Vlissides",
+    "available": true,
+    "imagePath": "https://m.media-amazon.com/images/I/81IGFC6oFmL._AC_UF1000,1000_QL80_.jpg",
+    "description": "A classic book on software design patterns, explaining proven solutions to common design problems. It introduces 23 fundamental design patterns that help create reusable object-oriented software."
+  },
+  {
+    "id": 4,
+    "title": "Refactoring: Improving the Design of Existing Code",
+    "author": "Martin Fowler",
+    "available": true,
+    "imagePath": "https://m.media-amazon.com/images/I/71e6ndHEwqL._AC_UF1000,1000_QL80_.jpg",
+    "description": "This book focuses on the art of refactoring – the process of improving the design of existing code without changing its external behavior. It emphasizes maintaining clean, efficient, and understandable code."
+  },
+  {
+    "id": 5,
+    "title": "Artificial Intelligence: A Modern Approach",
+    "author": "Stuart Russell, Peter Norvig",
+    "available": false,
+    "imagePath": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS7GPBLv29ShBHq7NZno-7IBHYSkmQiaG8_vw&s",
+    "description": "A comprehensive textbook on artificial intelligence, covering everything from basic algorithms to advanced topics like machine learning, robotics, and natural language processing."
+  }
+]

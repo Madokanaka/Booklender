@@ -1,0 +1,16 @@
+[
+  {
+    "id": 1,
+    "name": "Иван Иванов",
+    "position": "Разработчик",
+    "currentBooks": [2],
+    "pastBooks": [2, 4]
+  },
+  {
+    "id": 2,
+    "name": "Петр Петров",
+    "position": "Менеджер",
+    "currentBooks": [5],
+    "pastBooks": [1, 3]
+  }
+]

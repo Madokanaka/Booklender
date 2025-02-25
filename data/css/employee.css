@@ -1,0 +1,80 @@
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #f4f4f4;
+}
+
+header {
+    background-color: #333;
+    color: white;
+    text-align: center;
+    padding: 15px;
+}
+
+main {
+    width: 80%;
+    margin: 20px auto;
+    background: white;
+    padding: 20px;
+    border-radius: 5px;
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+}
+
+.employee-info {
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.books-section {
+    margin-bottom: 30px;
+}
+
+.book-list {
+    list-style: none;
+    padding: 0;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 15px;
+}
+
+.book-item {
+    display: flex;
+    align-items: center;
+    background: #fff;
+    padding: 10px;
+    border-radius: 5px;
+    box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.1);
+    width: 100%;
+    max-width: 500px;
+}
+
+.book-item img {
+    width: 80px;
+    height: 120px;
+    object-fit: cover;
+    margin-right: 15px;
+    border-radius: 5px;
+}
+
+.book-info {
+    display: flex;
+    flex-direction: column;
+}
+
+.book-info h4 {
+    margin: 0;
+}
+
+.book-info p {
+    margin: 5px 0;
+}
+
+.book-info a {
+    color: #007BFF;
+    text-decoration: none;
+}
+
+.book-info a:hover {
+    text-decoration: underline;
+}

@@ -5,9 +5,12 @@ import freemarker.template.Configuration;
 import freemarker.template.Template;
 import freemarker.template.TemplateException;
 import freemarker.template.TemplateExceptionHandler;
+import kg.attractor.java.lesson44.models.Book;
+import kg.attractor.java.lesson44.models.Employee;
 import kg.attractor.java.server.BasicServer;
 import kg.attractor.java.server.ContentType;
 import kg.attractor.java.server.ResponseCodes;
+import kg.attractor.java.lesson44.util.JsonUtil;
 
 import java.io.*;
 import java.time.LocalDateTime;
@@ -21,6 +24,10 @@ public class Lesson44Server extends BasicServer {
     public Lesson44Server(String host, int port) throws IOException {
         super(host, port);
         registerGet("/sample", this::freemarkerSampleHandler);
+        registerGet("/employees", this::employeesHandler);
+        registerGet("/book/.*", this::bookDetailsHandler);
+        registerGet("/books", this::booksHandler);
+        registerGet("/employee/.*", this::employeeDetailsHandler);
     }
 
     private static Configuration initFreeMarker() {
@@ -42,6 +49,25 @@ public class Lesson44Server extends BasicServer {
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
+    }
+
+    private void employeesHandler(HttpExchange exchange) {
+        List<Employee> employees = JsonUtil.readEmployeesFromFile();
+        List<Book> books = JsonUtil.readBooksFromFile();
+        Map<String, Object> dataModel = new HashMap<>();
+        dataModel.put("employees", employees);
+        dataModel.put("books", books);
+        renderTemplate(exchange, "employees.ftlh", dataModel);
+    }
+
+
+    private void bookDetailsHandler(HttpExchange exchange) {
+        String path = exchange.getRequestURI().getPath();
+        int bookId = Integer.parseInt(path.substring(path.lastIndexOf("/") + 1));
+        Book book = JsonUtil.getBookById(bookId);
+        Map<String, Object> dataModel = new HashMap<>();
+        dataModel.put("book", book);
+        renderTemplate(exchange, "book.ftlh", dataModel);
     }
 
     private void freemarkerSampleHandler(HttpExchange exchange) {
@@ -79,6 +105,14 @@ public class Lesson44Server extends BasicServer {
         }
     }
 
+    private void booksHandler(HttpExchange exchange) {
+        List<Book> books = JsonUtil.readBooksFromFile();
+        Map<String, Object> dataModel = new HashMap<>();
+        dataModel.put("books", books);
+        renderTemplate(exchange, "books.ftlh", dataModel);
+    }
+
+
     private Map<String, Object> getSampleDataModel() {
         // возвращаем экземпляр тестовой модели-данных
         // которую freemarker будет использовать для наполнения шаблона
@@ -93,4 +127,26 @@ public class Lesson44Server extends BasicServer {
         ));
         return data;
     }
+
+    private void employeeDetailsHandler(HttpExchange exchange) {
+        String path = exchange.getRequestURI().getPath();
+        int employeeId = Integer.parseInt(path.substring(path.lastIndexOf("/") + 1));
+
+        Employee employee = JsonUtil.getEmployeeById(employeeId);
+        List<Book> currentBooks = employee.getCurrentBooks().stream()
+                .map(JsonUtil::getBookById)
+                .toList();
+
+        List<Book> pastBooks = employee.getPastBooks().stream()
+                .map(JsonUtil::getBookById)
+                .toList();
+
+        Map<String, Object> dataModel = new HashMap<>();
+        dataModel.put("employee", employee);
+        dataModel.put("currentBooks", currentBooks);
+        dataModel.put("pastBooks", pastBooks);
+
+        renderTemplate(exchange, "employee.ftlh", dataModel);
+    }
+
 }
