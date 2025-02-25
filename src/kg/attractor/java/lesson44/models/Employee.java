@@ -38,5 +38,17 @@ public class Employee {
     public void setPastBooks(List<Integer> pastBooks) {
         this.pastBooks = pastBooks;
     }
+
+    public int getId() {
+        return id;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public String getPosition() {
+        return position;
+    }
 }
 

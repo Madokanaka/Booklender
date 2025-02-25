@@ -5,9 +5,12 @@ import freemarker.template.Configuration;
 import freemarker.template.Template;
 import freemarker.template.TemplateException;
 import freemarker.template.TemplateExceptionHandler;
+import kg.attractor.java.lesson44.models.Book;
+import kg.attractor.java.lesson44.models.Employee;
 import kg.attractor.java.server.BasicServer;
 import kg.attractor.java.server.ContentType;
 import kg.attractor.java.server.ResponseCodes;
+import kg.attractor.java.lesson44.util.JsonUtil;
 
 import java.io.*;
 import java.time.LocalDateTime;
@@ -21,6 +24,8 @@ public class Lesson44Server extends BasicServer {
     public Lesson44Server(String host, int port) throws IOException {
         super(host, port);
         registerGet("/sample", this::freemarkerSampleHandler);
+        registerGet("/employees", this::employeesHandler);
+        registerGet("/book/{id}", this::bookDetailsHandler);
     }
 
     private static Configuration initFreeMarker() {
@@ -42,6 +47,25 @@ public class Lesson44Server extends BasicServer {
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
+    }
+
+    private void employeesHandler(HttpExchange exchange) {
+        List<Employee> employees = JsonUtil.readEmployeesFromFile();
+        List<Book> books = JsonUtil.readBooksFromFile();
+        Map<String, Object> dataModel = new HashMap<>();
+        dataModel.put("employees", employees);
+        dataModel.put("books", books);
+        renderTemplate(exchange, "employees.ftlh", dataModel);
+    }
+
+
+    private void bookDetailsHandler(HttpExchange exchange) {
+        String path = exchange.getRequestURI().getPath();
+        int bookId = Integer.parseInt(path.substring(path.lastIndexOf("/") + 1));
+        Book book = JsonUtil.getBookById(bookId);
+        Map<String, Object> dataModel = new HashMap<>();
+        dataModel.put("book", book);
+        renderTemplate(exchange, "book.ftlh", dataModel);
     }
 
     private void freemarkerSampleHandler(HttpExchange exchange) {
@@ -78,6 +102,14 @@ public class Lesson44Server extends BasicServer {
             e.printStackTrace();
         }
     }
+
+    private void booksHandler(HttpExchange exchange) {
+        List<Book> books = JsonUtil.readBooksFromFile();
+        Map<String, Object> dataModel = new HashMap<>();
+        dataModel.put("books", books);
+        renderTemplate(exchange, "books.ftlh", dataModel);
+    }
+
 
     private Map<String, Object> getSampleDataModel() {
         // возвращаем экземпляр тестовой модели-данных

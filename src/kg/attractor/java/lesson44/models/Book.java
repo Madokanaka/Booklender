@@ -38,5 +38,6 @@ public class Book {
     public String getImagePath() {
         return imagePath;
     }
+
 }
 
