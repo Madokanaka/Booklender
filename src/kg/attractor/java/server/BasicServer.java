@@ -129,11 +129,39 @@ public abstract class BasicServer {
     }
 
     private void handleIncomingServerRequests(HttpExchange exchange) {
-        RouteHandler route = getRoutes().getOrDefault(makeKey(exchange), this::respond404);
-        route.handle(exchange);
+        String path = exchange.getRequestURI().getPath();
+        String method = exchange.getRequestMethod();
+        String key = makeKey(method, path);
+
+        RouteHandler route = getRoutes().get(key);
+
+        if (route != null) {
+            route.handle(exchange);
+        } else {
+            route = findDynamicRoute(path);
+            if (route != null) {
+                route.handle(exchange);
+            } else {
+                respond404(exchange);
+            }
+        }
     }
+
+    private RouteHandler findDynamicRoute(String path) {
+        for (Map.Entry<String, RouteHandler> entry : getRoutes().entrySet()) {
+            String route = entry.getKey();
+
+            if (route.startsWith("GET /book/") && path.matches("/book/\\d+")) {
+                return entry.getValue();
+            }
+        }
+        return null;
+    }
+
 
     public final void start() {
         server.start();
     }
+
+
 }

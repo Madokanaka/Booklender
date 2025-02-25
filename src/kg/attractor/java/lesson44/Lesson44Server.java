@@ -25,7 +25,9 @@ public class Lesson44Server extends BasicServer {
         super(host, port);
         registerGet("/sample", this::freemarkerSampleHandler);
         registerGet("/employees", this::employeesHandler);
-        registerGet("/book/{id}", this::bookDetailsHandler);
+        registerGet("/book/.*", this::bookDetailsHandler);
+
+        registerGet("/library", this::booksHandler);
     }
 
     private static Configuration initFreeMarker() {
@@ -60,8 +62,10 @@ public class Lesson44Server extends BasicServer {
 
 
     private void bookDetailsHandler(HttpExchange exchange) {
+        System.out.println("dafaf");
         String path = exchange.getRequestURI().getPath();
         int bookId = Integer.parseInt(path.substring(path.lastIndexOf("/") + 1));
+        System.out.println(bookId);
         Book book = JsonUtil.getBookById(bookId);
         Map<String, Object> dataModel = new HashMap<>();
         dataModel.put("book", book);
