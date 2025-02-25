@@ -21,8 +21,11 @@
                 <span class="unavailable">Выдана</span>
             </#if>
         </p>
-        <div class="book-image">
-            <img src="${book.imagePath}" class = "description-photo" alt="Обложка книги">
+        <div class="book-info">
+            <div class="book-image">
+                <img src="${book.imagePath}" class="description-photo" alt="Обложка книги">
+            </div>
+            <p class="book-description"><strong>Описание:</strong> ${book.description}</p>
         </div>
     </div>
 </div>

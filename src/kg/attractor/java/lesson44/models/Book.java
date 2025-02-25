@@ -6,13 +6,15 @@ public class Book {
     private String author;
     private boolean available;
     private String imagePath;
+    private String description;
 
-    public Book(int id, String title, String author, boolean available, String imagePath) {
+    public Book(int id, String title, String author, boolean available, String imagePath, String description) {
         this.id = id;
         this.title = title;
         this.author = author;
         this.available = available;
         this.imagePath = imagePath;
+        this.description = description;
     }
 
     public int getId() {
@@ -37,6 +39,10 @@ public class Book {
 
     public String getImagePath() {
         return imagePath;
+    }
+
+    public String getDescription() {
+        return description;
     }
 
 }

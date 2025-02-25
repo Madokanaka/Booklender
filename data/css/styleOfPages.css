@@ -99,3 +99,24 @@ section .book-list {
     margin-bottom: 10px;
     padding-top: 20px;
 }
+
+.book-info {
+    display: flex;
+    align-items: start;
+    gap: 20px;
+}
+
+.book-image {
+    max-width: 200px;
+}
+
+.description-photo {
+    width: 100%;
+    height: auto;
+}
+
+.book-description {
+    flex: 1;
+    margin: 20px 0;
+}
+
