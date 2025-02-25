@@ -134,7 +134,7 @@ public abstract class BasicServer {
         String method = exchange.getRequestMethod();
         String key = makeKey(method, path);
 
-        RouteHandler route = getRoutes().get(key);
+        RouteHandler route = getRoutes().get(makeKey(exchange));
 
         if (route != null) {
             route.handle(exchange);
@@ -146,6 +146,8 @@ public abstract class BasicServer {
                 respond404(exchange);
             }
         }
+//        var route = getRoutes().getOrDefault(makeKey(exchange), this::respond404);
+//        route.handle(exchange);
     }
 
     private RouteHandler findDynamicRoute(String path) {
