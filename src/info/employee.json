@@ -3,6 +3,8 @@
     "id": 1,
     "name": "Иван Иванов",
     "position": "Разработчик",
+    "email": "ivan.ivanov@example.com",
+    "password": "12345",
     "currentBooks": [2],
     "pastBooks": [2, 4]
   },
@@ -10,6 +12,8 @@
     "id": 2,
     "name": "Петр Петров",
     "position": "Менеджер",
+    "email": "petr.petrov@example.com",
+    "password": "qwerty",
     "currentBooks": [5],
     "pastBooks": [1, 3]
   }
