@@ -5,8 +5,13 @@
     "position": "Разработчик",
     "email": "ivan.ivanov@example.com",
     "password": "12345",
-    "currentBooks": [2],
-    "pastBooks": [2, 4]
+    "currentBooks": [
+      2
+    ],
+    "pastBooks": [
+      2,
+      4
+    ]
   },
   {
     "id": 2,
@@ -14,7 +19,21 @@
     "position": "Менеджер",
     "email": "petr.petrov@example.com",
     "password": "qwerty",
-    "currentBooks": [5],
-    "pastBooks": [1, 3]
+    "currentBooks": [
+      5
+    ],
+    "pastBooks": [
+      1,
+      3
+    ]
+  },
+  {
+    "id": 3,
+    "name": "Some Name",
+    "position": "Some Position",
+    "email": "some_mail@example.exe",
+    "password": "sadf",
+    "currentBooks": [],
+    "pastBooks": []
   }
 ]

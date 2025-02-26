@@ -75,8 +75,17 @@ public class JsonUtil {
         return employees.stream().filter(emp -> emp.getId() == id).findFirst().orElse(null);
     }
 
+    public static Employee getEmployeeByEmail(String email) {
+        return employees.stream().filter(emp -> emp.getEmail().equals(email.trim())).findFirst().orElse(null);
+    }
+
     public static void addEmployee(Employee employee) {
+        employee.setId(getMaxEmployeeId() + 1);
         employees.add(employee);
         writeEmployeesToFile();
+    }
+
+    public static int getMaxEmployeeId() {
+        return employees.stream().mapToInt(Employee::getId).max().orElse(0);
     }
 }
