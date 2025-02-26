@@ -13,32 +13,45 @@ import java.lang.reflect.Type;
 import java.util.List;
 
 public class JsonUtil {
-    private static String filePath = "src/info/books.json";
-    private static String filePathToEmployees = "src/info/employee.json";
-
+    private static final String filePath = "src/info/books.json";
+    private static final String filePathToEmployees = "src/info/employee.json";
     private static final Gson gson = new GsonBuilder().setPrettyPrinting().create();
 
-    public static List<Book> readBooksFromFile() {
+    private static List<Book> books;
+    private static List<Employee> employees;
+
+    static {
+        loadBooks();
+        loadEmployees();
+    }
+
+    private static void loadBooks() {
         try (FileReader reader = new FileReader(filePath)) {
             Type bookListType = new TypeToken<List<Book>>(){}.getType();
-            return gson.fromJson(reader, bookListType);
+            books = gson.fromJson(reader, bookListType);
         } catch (IOException e) {
             e.printStackTrace();
-            return null;
         }
     }
 
-    public static List<Employee> readEmployeesFromFile() {
+    private static void loadEmployees() {
         try (FileReader reader = new FileReader(filePathToEmployees)) {
             Type employeeListType = new TypeToken<List<Employee>>(){}.getType();
-            return gson.fromJson(reader, employeeListType);
+            employees = gson.fromJson(reader, employeeListType);
         } catch (IOException e) {
             e.printStackTrace();
-            return null;
         }
     }
 
-    public static void writeBooksToFile(List<Book> books) {
+    public static List<Book> readBooks() {
+        return books;
+    }
+
+    public static List<Employee> readEmployees() {
+        return employees;
+    }
+
+    public static void writeBooksToFile() {
         try (FileWriter writer = new FileWriter(filePath)) {
             gson.toJson(books, writer);
         } catch (IOException e) {
@@ -46,7 +59,7 @@ public class JsonUtil {
         }
     }
 
-    public static void writeEmployeesToFile(List<Employee> employees) {
+    public static void writeEmployeesToFile() {
         try (FileWriter writer = new FileWriter(filePathToEmployees)) {
             gson.toJson(employees, writer);
         } catch (IOException e) {
@@ -55,16 +68,15 @@ public class JsonUtil {
     }
 
     public static Book getBookById(int id) {
-        List<Book> books = readBooksFromFile();
         return books.stream().filter(book -> book.getId() == id).findFirst().orElse(null);
     }
 
     public static Employee getEmployeeById(int id) {
-        List<Employee> employees = readEmployeesFromFile();
-        return employees.stream()
-                .filter(emp -> emp.getId() == id)
-                .findFirst()
-                .orElse(null);
+        return employees.stream().filter(emp -> emp.getId() == id).findFirst().orElse(null);
+    }
+
+    public static void addEmployee(Employee employee) {
+        employees.add(employee);
+        writeEmployeesToFile();
     }
 }
-
