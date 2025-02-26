@@ -198,4 +198,16 @@ public abstract class BasicServer {
         }
         return "";
     }
+
+    protected void redirect303(HttpExchange exchange, String path) {
+        try {
+            exchange.getResponseHeaders().add("Location", path);
+            exchange.sendResponseHeaders(ResponseCodes.REDIRECT.getCode(), 0);
+            exchange.getResponseBody().close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+
 }
