@@ -10,7 +10,7 @@ import kg.attractor.java.lesson44.models.Employee;
 import kg.attractor.java.server.BasicServer;
 import kg.attractor.java.server.ContentType;
 import kg.attractor.java.server.ResponseCodes;
-import kg.attractor.java.lesson44.util.JsonUtil;
+import kg.attractor.java.util.JsonUtil;
 
 import java.io.*;
 import java.time.LocalDateTime;

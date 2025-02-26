@@ -1,4 +1,4 @@
-package kg.attractor.java.lesson44.util;
+package kg.attractor.java.util;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
