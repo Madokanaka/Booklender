@@ -10,6 +10,7 @@ import kg.attractor.java.util.Utils;
 
 import java.io.IOException;
 import java.nio.file.Path;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -17,10 +18,12 @@ public class Lesson45Server extends Lesson44Server {
     public Lesson45Server(String host, int port) throws IOException {
         super(host, port);
 
-        registerGet("/auth/login", this::loginGet);
-        registerPost("/auth/login", this::loginPost);
+        registerGet("/login", this::loginGet);
+        registerPost("/login", this::loginPost);
         registerGet("/register", this::handleRegisterPage);
         registerPost("/register", this::handleRegisterPost);
+        registerGet("/register-error", this::registerErrorPage);
+        registerGet("/register-success", this::registerSuccessPage);
     }
 
     private void loginGet(HttpExchange exchange) {
@@ -54,9 +57,6 @@ public class Lesson45Server extends Lesson44Server {
     }
 
     private void handleRegisterPost(HttpExchange exchange) {
-        String cType = exchange.getRequestHeaders()
-                .getOrDefault("Content-Type", List.of())
-                .get(0);
 
         String raw = getBody(exchange);
 
@@ -66,14 +66,35 @@ public class Lesson45Server extends Lesson44Server {
         String position = params.get("position");
         String password = params.get("password");
 
+        Map<String, Object> data = new HashMap<>();
+
         if (JsonUtil.getEmployeeByEmail(email) != null) {
-            sendFile(exchange, makeFilePath("/register/register_error.ftlh"), ContentType.TEXT_HTML);
-            return;
+            redirect303(exchange, "/register-error");
+        } else {
+            Employee newEmployee = new Employee(name, position, email, password);
+            JsonUtil.addEmployee(newEmployee);
+
+            redirect303(exchange, "/register-success");
         }
-
-        Employee newEmployee = new Employee(name, position, email, password);
-        JsonUtil.addEmployee(newEmployee);
-
-        sendFile(exchange, makeFilePath("/register/register_success.ftlh"), ContentType.TEXT_HTML);
     }
+
+    private void registerSuccessPage(HttpExchange exchange) {
+        Map<String, Object> data = new HashMap<>();
+        data.put("success", true);
+        data.put("message", "Регистрация успешна! Теперь вы можете войти.");
+
+        renderTemplate(exchange, "register/register_result.ftlh", data);
+    }
+
+    private void registerErrorPage(HttpExchange exchange) {
+        Map<String, Object> data = new HashMap<>();
+        data.put("success", false);
+        data.put("message", "Пользователь с таким email уже зарегистрирован!");
+
+        renderTemplate(exchange, "register/register_result.ftlh", data);
+    }
+
+
+
+
 }

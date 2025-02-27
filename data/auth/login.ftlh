@@ -9,7 +9,7 @@
 
 <body>
     <main>
-        <form action="/auth/login" method="post">
+        <form action="/login" method="post">
             <fieldset>
                 <div class="legend">
                     <p>Welcome!</p>

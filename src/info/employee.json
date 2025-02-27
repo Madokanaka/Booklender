@@ -35,5 +35,23 @@
     "password": "sadf",
     "currentBooks": [],
     "pastBooks": []
+  },
+  {
+    "id": 4,
+    "name": "some_mail@example.exessf",
+    "position": "sdfa",
+    "email": "sdf",
+    "password": "adsf",
+    "currentBooks": [],
+    "pastBooks": []
+  },
+  {
+    "id": 5,
+    "name": "Some Name",
+    "position": "Some Position",
+    "email": "some_mail@example.exedsfsaf",
+    "password": "sadfafs",
+    "currentBooks": [],
+    "pastBooks": []
   }
 ]
