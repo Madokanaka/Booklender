@@ -17,7 +17,7 @@
                     <div class="alert alert-success">
                         <p>${message}</p>
                     </div>
-                    <a href="/auth/login" class="btn btn-primary">Войти</a>
+                    <a href="/login" class="btn btn-primary">Войти</a>
                 <#else>
                     <div class="alert alert-danger">
                         <p>${message}</p>
