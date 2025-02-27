@@ -53,5 +53,14 @@
     "password": "sadfafs",
     "currentBooks": [],
     "pastBooks": []
+  },
+  {
+    "id": 6,
+    "name": "random",
+    "position": "random",
+    "email": "random@mail.ru",
+    "password": "random",
+    "currentBooks": [],
+    "pastBooks": []
   }
 ]

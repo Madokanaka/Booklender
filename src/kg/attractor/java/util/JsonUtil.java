@@ -16,6 +16,7 @@ public class JsonUtil {
     private static final String filePath = "src/info/books.json";
     private static final String filePathToEmployees = "src/info/employee.json";
     private static final Gson gson = new GsonBuilder().setPrettyPrinting().create();
+    private static final Employee vagueEmp = new Employee("Некий пользователь", "Некая должность", "some@mail.some", "somePassword");
 
     private static List<Book> books;
     private static List<Employee> employees;
@@ -87,5 +88,9 @@ public class JsonUtil {
 
     public static int getMaxEmployeeId() {
         return employees.stream().mapToInt(Employee::getId).max().orElse(0);
+    }
+
+    public static Employee getVagueEmp (){
+        return vagueEmp;
     }
 }
