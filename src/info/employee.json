@@ -3,14 +3,64 @@
     "id": 1,
     "name": "Иван Иванов",
     "position": "Разработчик",
-    "currentBooks": [2],
-    "pastBooks": [2, 4]
+    "email": "ivan.ivanov@example.com",
+    "password": "12345",
+    "currentBooks": [
+      2
+    ],
+    "pastBooks": [
+      2,
+      4
+    ]
   },
   {
     "id": 2,
     "name": "Петр Петров",
     "position": "Менеджер",
-    "currentBooks": [5],
-    "pastBooks": [1, 3]
+    "email": "petr.petrov@example.com",
+    "password": "qwerty",
+    "currentBooks": [
+      5
+    ],
+    "pastBooks": [
+      1,
+      3
+    ]
+  },
+  {
+    "id": 3,
+    "name": "Some Name",
+    "position": "Some Position",
+    "email": "some_mail@example.exe",
+    "password": "sadf",
+    "currentBooks": [],
+    "pastBooks": []
+  },
+  {
+    "id": 4,
+    "name": "some_mail@example.exessf",
+    "position": "sdfa",
+    "email": "sdf",
+    "password": "adsf",
+    "currentBooks": [],
+    "pastBooks": []
+  },
+  {
+    "id": 5,
+    "name": "Some Name",
+    "position": "Some Position",
+    "email": "some_mail@example.exedsfsaf",
+    "password": "sadfafs",
+    "currentBooks": [],
+    "pastBooks": []
+  },
+  {
+    "id": 6,
+    "name": "random",
+    "position": "random",
+    "email": "random@mail.ru",
+    "password": "random",
+    "currentBooks": [],
+    "pastBooks": []
   }
 ]

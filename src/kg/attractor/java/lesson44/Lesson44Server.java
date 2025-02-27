@@ -10,7 +10,7 @@ import kg.attractor.java.lesson44.models.Employee;
 import kg.attractor.java.server.BasicServer;
 import kg.attractor.java.server.ContentType;
 import kg.attractor.java.server.ResponseCodes;
-import kg.attractor.java.lesson44.util.JsonUtil;
+import kg.attractor.java.util.JsonUtil;
 
 import java.io.*;
 import java.time.LocalDateTime;
@@ -52,8 +52,8 @@ public class Lesson44Server extends BasicServer {
     }
 
     private void employeesHandler(HttpExchange exchange) {
-        List<Employee> employees = JsonUtil.readEmployeesFromFile();
-        List<Book> books = JsonUtil.readBooksFromFile();
+        List<Employee> employees = JsonUtil.readEmployees();
+        List<Book> books = JsonUtil.readBooks();
         Map<String, Object> dataModel = new HashMap<>();
         dataModel.put("employees", employees);
         dataModel.put("books", books);
@@ -106,7 +106,7 @@ public class Lesson44Server extends BasicServer {
     }
 
     private void booksHandler(HttpExchange exchange) {
-        List<Book> books = JsonUtil.readBooksFromFile();
+        List<Book> books = JsonUtil.readBooks();
         Map<String, Object> dataModel = new HashMap<>();
         dataModel.put("books", books);
         renderTemplate(exchange, "books.ftlh", dataModel);
