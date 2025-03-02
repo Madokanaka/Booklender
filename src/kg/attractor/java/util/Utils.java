@@ -4,7 +4,6 @@ import java.net.URLDecoder;
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
 import java.util.Arrays;
-import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -35,6 +34,6 @@ public class Utils {
         String key = URLDecoder.decode(parts[0], charset);
         String value = URLDecoder.decode(parts[1], charset);
 
-        return Optional.of(Map.entry(key, value));
+        return Optional.of(Map.entry(key.strip(), value.strip()));
     }
 }
