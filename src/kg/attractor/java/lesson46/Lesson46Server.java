@@ -11,6 +11,7 @@ import java.io.IOException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 public class Lesson46Server extends Lesson45Server {
     public Lesson46Server(String host, int port) throws IOException {
@@ -19,7 +20,8 @@ public class Lesson46Server extends Lesson45Server {
         registerGet("/cookie", this::cookieHandler);
         registerGet("/takeBooks", this::takeBooksHandler);
         registerGet("/takeBook/.*", this::takeBookHandler);
-
+        registerGet("/returnBooks", this::returnBooksHandler);
+        registerGet("/returnBook/.*", this::returnBookHandler);
     }
 
     private void cookieHandler(HttpExchange exchange) {
@@ -88,7 +90,7 @@ public class Lesson46Server extends Lesson45Server {
         if (emp == null) {
             data.put("isAuthorized", false);
             data.put("message", "Вы не авторизованы. Пожалуйста, войдите в систему.");
-            renderTemplate(exchange, "bookActions/takeBookResult.ftlh", data);
+            renderTemplate(exchange, "bookActions/actionBookResult.ftlh", data);
             return;
         }
 
@@ -110,9 +112,72 @@ public class Lesson46Server extends Lesson45Server {
             data.put("isAuthorized", true);
             data.put("message", "Книга успешно взята!");
             JsonUtil.writeEmployeesToFile();
+            JsonUtil.writeBooksToFile();
         }
 
-        renderTemplate(exchange, "bookActions/takeBookResult.ftlh", data);
+        renderTemplate(exchange, "bookActions/actionBookResult.ftlh", data);
+    }
+
+    private void returnBooksHandler(HttpExchange exchange) {
+        String cookieString = getCookie(exchange);
+        Map<String, String> cookies = Cookie.parse(cookieString);
+        String sessionId = cookies.get("sessionId");
+        Employee emp = sessionId != null ? sessions.get(sessionId) : null;
+        Map<String, Object> data = new HashMap<>();
+        if (emp == null) {
+            data.put("isAuthorized", false);
+        } else {
+            List<Integer> currentBookIds = emp.getCurrentBooks();
+            List<Book> books = currentBookIds.stream()
+                    .map(id -> JsonUtil.getBookById(id))
+                    .filter(book -> book != null)
+                    .collect(Collectors.toList());
+            data.put("isAuthorized", true);
+            data.put("hasBooks", !emp.getCurrentBooks().isEmpty());
+            data.put("books", books);
+        }
+
+        renderTemplate(exchange, "bookActions/returnBook.ftlh", data);
+    }
+
+    private void returnBookHandler(HttpExchange exchange) {
+        String cookieString = getCookie(exchange);
+        Map<String, String> cookies = Cookie.parse(cookieString);
+        String sessionId = cookies.get("sessionId");
+        Employee emp = sessionId != null ? sessions.get(sessionId) : null;
+        Map<String, Object> data = new HashMap<>();
+        String path = exchange.getRequestURI().getPath();
+        String bookIdString = path.split("/")[2];
+
+        if (emp == null) {
+            data.put("isAuthorized", false);
+            data.put("message", "Вы не авторизованы. Пожалуйста, войдите в систему.");
+            renderTemplate(exchange, "bookActions/actionBookResult.ftlh", data);
+            return;
+        }
+
+        int bookId = Integer.parseInt(bookIdString);
+        Book book = JsonUtil.getBookById(bookId);
+
+        if (book == null) {
+            data.put("isAuthorized", true);
+            data.put("message", "Книга не найдена.");
+        } else if (emp.getCurrentBooks().isEmpty()) {
+            data.put("isAuthorized", true);
+            data.put("message", "У вас нет книг для возврата.");
+        } else {
+            emp.getCurrentBooks().remove((Integer)bookId);
+            if (!emp.getPastBooks().contains(bookId))
+                emp.getPastBooks().add(bookId);
+
+            book.setAvailable(true);
+            data.put("isAuthorized", true);
+            data.put("message", "Книга успешно возвращено!");
+            JsonUtil.writeEmployeesToFile();
+            JsonUtil.writeBooksToFile();
+        }
+
+        renderTemplate(exchange, "bookActions/actionBookResult.ftlh", data);
     }
 
 }
