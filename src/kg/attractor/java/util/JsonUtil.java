@@ -93,4 +93,10 @@ public class JsonUtil {
     public static Employee getVagueEmp (){
         return vagueEmp;
     }
+
+    public static List<Book> getAvailableBooks() {
+        return books.stream()
+                .filter(Book::isAvailable)
+                .toList();
+    }
 }
