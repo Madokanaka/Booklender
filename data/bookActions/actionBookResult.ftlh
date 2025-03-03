@@ -22,15 +22,15 @@
                 ${message}
             </div>
         </#if>
-
+        <a href="/takeBooks" class="btn btn-secondary">Вернуться к списку книг</a>
+        <a href="/profile" class="btn btn-primary">Перейти в профиль</a>
     <#else>
         <div class="alert alert-danger" role="alert">
             Вы не авторизованы. Пожалуйста, войдите в систему.
         </div>
+        <a href="/login" class="btn btn-primary">Перейти на страницу входа</a>
     </#if>
 
-    <a href="/takeBooks" class="btn btn-secondary">Вернуться к списку книг</a>
-    <a href="/profile" class="btn btn-primary">Перейти в профиль</a>
 </div>
 </body>
 </html>

@@ -8,12 +8,12 @@
 </head>
 <body>
 <div class="container">
-    <h1 class="my-4">Библиотека</h1>
+    <h1 class="my-4">Возврат книг</h1>
 
     <#if isAuthorized>
-        <#if canTakeBooks>
-            <h2 class="mb-5">Доступные книги</h2>
-            <#if booksAvailable>
+        <#if hasBooks>
+            <h2 class="mb-5">Ваши взятые книги</h2>
+            <ul class="list-unstyled row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4">
                 <ul class="list-unstyled row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4">
                     <#list books as book>
                         <li class="col">
@@ -25,29 +25,24 @@
                                 </div>
                                 <div class="mt-auto">
                                     <a href="/book/${book.id}" class="btn btn-primary">Подробнее</a>
-                                    <a href="/takeBook/${book.id}" class="btn btn-success ml-2">Взять книгу</a>
+                                    <a href="/returnBook/${book.id}" class="btn btn-danger ml-2">Вернуть книгу</a>
                                 </div>
                             </div>
                         </li>
                     </#list>
                 </ul>
-            <#else>
-                <p>Нет доступных книг.</p>
-            </#if>
+            </ul>
         <#else>
-            <div class="alert alert-warning" role="alert">
-                Вы достигли максимального количества взятых книг.
-            </div>
-            <a href="/profile" class="btn btn-primary">Перейти в профиль</a>
-
+            <p>У вас нет взятых книг для возврата.</p>
+            <a href="/profile" class="btn btn-primary">Профиль</a>
         </#if>
     <#else>
         <div class="alert alert-danger" role="alert">
             Вы не авторизованы. Пожалуйста, войдите в систему.
         </div>
         <a href="/login" class="btn btn-primary">Перейти на страницу входа</a>
-
     </#if>
+
 </div>
 </body>
 </html>
