@@ -20,7 +20,8 @@ import java.util.concurrent.ConcurrentHashMap;
 
 public class Lesson45Server extends Lesson44Server {
 
-    private final Map<String, Employee> sessions = new ConcurrentHashMap<>();
+    protected final Map<String, Employee> sessions = new ConcurrentHashMap<>();
+
     public Lesson45Server(String host, int port) throws IOException {
         super(host, port);
 
@@ -98,7 +99,9 @@ public class Lesson45Server extends Lesson44Server {
     }
 
     private void handleRegisterPage(HttpExchange exchange) {
-        sendFile(exchange, makeFilePath("/register/register.ftlh"), ContentType.TEXT_HTML);
+        Map<String, Object> data = new HashMap<>();
+        data.put("error", null);
+        renderTemplate(exchange, "register/register.ftlh", data);
     }
 
     private void handleRegisterPost(HttpExchange exchange) {
@@ -110,6 +113,16 @@ public class Lesson45Server extends Lesson44Server {
         String name = params.get("name");
         String position = params.get("position");
         String password = params.get("password");
+
+        if (email == null || email.isEmpty() ||
+                name == null || name.isEmpty() ||
+                position == null || position.isEmpty() ||
+                password == null || password.isEmpty()) {
+                    Map<String, Object> data = new HashMap<>();
+                    data.put("error", "Все поля должны быть заполнены!");
+                    renderTemplate(exchange, "register/register.ftlh", data);
+                    return;
+        }
 
         if (JsonUtil.getEmployeeByEmail(email) != null) {
             redirect303(exchange, "/register-error");
@@ -136,8 +149,6 @@ public class Lesson45Server extends Lesson44Server {
 
         renderTemplate(exchange, "register/register_result.ftlh", data);
     }
-
-
 
 
 }
