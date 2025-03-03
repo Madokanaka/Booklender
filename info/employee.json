@@ -62,28 +62,5 @@
     "password": "random",
     "currentBooks": [],
     "pastBooks": []
-  },
-  {
-    "id": 7,
-    "email": "dsf@mail.ru",
-    "currentBooks": [],
-    "pastBooks": []
-  },
-  {
-    "id": 8,
-    "name": "Some Name",
-    "position": "asfd",
-    "email": "asome@mail.com",
-    "currentBooks": [],
-    "pastBooks": []
-  },
-  {
-    "id": 9,
-    "name": "afsdasdf",
-    "position": "asfd",
-    "email": "asfd@dsaf.co",
-    "password": "yase",
-    "currentBooks": [],
-    "pastBooks": []
   }
 ]

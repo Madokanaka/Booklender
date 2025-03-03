@@ -66,6 +66,13 @@
                 </ul>
             </#if>
         </section>
+
+        <section class="book-actions text-center mb-4">
+            <h3>📥 Действия с книгами</h3>
+            <a href="/takeBooks" class="btn btn-success btn-lg m-2">Взять книгу</a>
+            <a href="/returnBook" class="btn btn-info btn-lg m-2">Вернуть книгу</a>
+        </section>
+
     </main>
 </div>
 
