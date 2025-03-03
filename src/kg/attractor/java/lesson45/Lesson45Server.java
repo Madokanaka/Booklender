@@ -5,6 +5,7 @@ import kg.attractor.java.lesson44.Lesson44Server;
 import kg.attractor.java.lesson44.models.Book;
 import kg.attractor.java.lesson44.models.Employee;
 import kg.attractor.java.server.ContentType;
+import kg.attractor.java.server.Cookie;
 import kg.attractor.java.util.JsonUtil;
 import kg.attractor.java.util.Utils;
 
@@ -49,7 +50,12 @@ public class Lesson45Server extends Lesson44Server {
             String sessionId = UUID.randomUUID().toString();
             sessions.put(sessionId, employee);
 
-            redirect303(exchange, "/profile?sessionId=" + sessionId);
+            Cookie sessionCookie = Cookie.make("sessionId", sessionId);
+            sessionCookie.setMaxAge(600);
+            sessionCookie.setHttpOnly(true);
+            setCookie(exchange, sessionCookie);
+
+            redirect303(exchange, "/profile");
         } else {
             redirect303(exchange, "/login-error");
         }
@@ -61,13 +67,9 @@ public class Lesson45Server extends Lesson44Server {
     }
 
     private void profileGet(HttpExchange exchange) {
-        String query = exchange.getRequestURI().getQuery();
-        String sessionId = null;
-
-        if (query != null) {
-            Map<String, String> queryParams = Utils.parseUrlEncoded(query, "&");
-            sessionId = queryParams.get("sessionId");
-        }
+        String cookieString = getCookie(exchange);
+        Map<String, String> cookies = Cookie.parse(cookieString);
+        String sessionId = cookies.get("sessionId");
 
         Employee loggedInUser = sessionId != null ? sessions.get(sessionId) : null;
 

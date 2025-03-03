@@ -18,7 +18,7 @@ public class Lesson46Server extends Lesson45Server {
     private void cookieHandler(HttpExchange exchange) {
         Map<String, Object> data = new HashMap<>();
 
-        Cookie sessionCookie = Cookie.make("userId", "!@#$%ˆ&*())_+"); //%21%40%23%24%25%CB%86%26*%28%29%29_%2B
+        Cookie sessionCookie = Cookie.make("userId", "!@#$%ˆ&*())_+");
         setCookie(exchange, sessionCookie);
 
         Cookie c1 = Cookie.make("user%Id", "456");
