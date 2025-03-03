@@ -186,6 +186,14 @@ public abstract class BasicServer {
                     return entry.getValue();
                 }
             }
+
+            if (route.startsWith("GET /returnBook/") && path.matches("/returnBook/\\d+")) {
+                int bookId = Integer.parseInt(path.substring(path.lastIndexOf("/") + 1));
+                Book book = JsonUtil.getBookById(bookId);
+                if (book != null) {
+                    return entry.getValue();
+                }
+            }
         }
         return null;
     }

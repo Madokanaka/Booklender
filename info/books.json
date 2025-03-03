@@ -12,7 +12,7 @@
     "title": "The Pragmatic Programmer",
     "author": "Andrew Hunt, David Thomas",
     "available": false,
-    "imagePath": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSvpVYaJ2clBPnAgpBI_mfOrwMzbBfvB3M5bg&s",
+    "imagePath": "https://encrypted-tbn0.gstatic.com/images?q\u003dtbn:ANd9GcSvpVYaJ2clBPnAgpBI_mfOrwMzbBfvB3M5bg\u0026s",
     "description": "A comprehensive guide to becoming a better software developer. It covers a wide range of topics, from practical programming tips to effective collaboration strategies."
   },
   {
@@ -36,7 +36,7 @@
     "title": "Artificial Intelligence: A Modern Approach",
     "author": "Stuart Russell, Peter Norvig",
     "available": false,
-    "imagePath": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS7GPBLv29ShBHq7NZno-7IBHYSkmQiaG8_vw&s",
+    "imagePath": "https://encrypted-tbn0.gstatic.com/images?q\u003dtbn:ANd9GcS7GPBLv29ShBHq7NZno-7IBHYSkmQiaG8_vw\u0026s",
     "description": "A comprehensive textbook on artificial intelligence, covering everything from basic algorithms to advanced topics like machine learning, robotics, and natural language processing."
   }
 ]
