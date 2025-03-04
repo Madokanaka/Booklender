@@ -22,6 +22,7 @@ public class Lesson46Server extends Lesson45Server {
         registerGet("/takeBook/.*", this::takeBookHandler);
         registerGet("/returnBooks", this::returnBooksHandler);
         registerGet("/returnBook/.*", this::returnBookHandler);
+        registerGet("/logout", this::logoutHandler);
     }
 
     private void cookieHandler(HttpExchange exchange) {
@@ -178,6 +179,23 @@ public class Lesson46Server extends Lesson45Server {
         }
 
         renderTemplate(exchange, "bookActions/actionBookResult.ftlh", data);
+    }
+
+    private void logoutHandler(HttpExchange exchange) {
+        String cookieString = getCookie(exchange);
+        Map<String, String> cookies = Cookie.parse(cookieString);
+        String sessionId = cookies.get("sessionId");
+
+        if(sessionId != null) {
+            sessions.remove(sessionId);
+        }
+
+        Cookie expiredCookie = Cookie.make("sessionId", "");
+        expiredCookie.setMaxAge(0);
+        expiredCookie.setHttpOnly(true);
+        setCookie(exchange, expiredCookie);
+
+        redirect303(exchange, "/login");
     }
 
 }
