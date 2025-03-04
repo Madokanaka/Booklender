@@ -13,8 +13,8 @@ import java.lang.reflect.Type;
 import java.util.List;
 
 public class JsonUtil {
-    private static final String filePath = "src/info/books.json";
-    private static final String filePathToEmployees = "src/info/employee.json";
+    private static final String filePath = "info/books.json";
+    private static final String filePathToEmployees = "info/employee.json";
     private static final Gson gson = new GsonBuilder().setPrettyPrinting().create();
     private static final Employee vagueEmp = new Employee("Некий пользователь", "Некая должность", "some@mail.some", "somePassword");
 
@@ -92,5 +92,11 @@ public class JsonUtil {
 
     public static Employee getVagueEmp (){
         return vagueEmp;
+    }
+
+    public static List<Book> getAvailableBooks() {
+        return books.stream()
+                .filter(Book::isAvailable)
+                .toList();
     }
 }

@@ -12,6 +12,7 @@
         <div class="col-md-6">
             <div class="card shadow p-4">
                 <h2 class="text-center text-primary">Регистрация</h2>
+
                 <form action="/register" method="post">
                     <fieldset>
                         <legend class="text-center">Пожалуйста, заполните форму</legend>
@@ -31,6 +32,12 @@
                         <div class="mb-3">
                             <label for="password" class="form-label">Пароль</label>
                             <input type="password" class="form-control" id="password" name="password" required>
+                        </div>
+
+                        <div class="mb-3 text-danger text-center">
+                            <#if error??>
+                                <p>${error}</p>
+                            </#if>
                         </div>
 
                         <button type="submit" class="btn btn-primary w-100">Зарегистрироваться</button>

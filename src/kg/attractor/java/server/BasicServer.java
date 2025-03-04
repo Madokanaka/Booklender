@@ -17,6 +17,7 @@ import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
@@ -177,6 +178,22 @@ public abstract class BasicServer {
                     return entry.getValue();
                 }
             }
+
+            if (route.startsWith("GET /takeBook/") && path.matches("/takeBook/\\d+")) {
+                int bookId = Integer.parseInt(path.substring(path.lastIndexOf("/") + 1));
+                Book book = JsonUtil.getBookById(bookId);
+                if (book != null) {
+                    return entry.getValue();
+                }
+            }
+
+            if (route.startsWith("GET /returnBook/") && path.matches("/returnBook/\\d+")) {
+                int bookId = Integer.parseInt(path.substring(path.lastIndexOf("/") + 1));
+                Book book = JsonUtil.getBookById(bookId);
+                if (book != null) {
+                    return entry.getValue();
+                }
+            }
         }
         return null;
     }
@@ -209,5 +226,13 @@ public abstract class BasicServer {
         }
     }
 
+    protected void setCookie(HttpExchange exchange, Cookie cookie) {
+        exchange.getResponseHeaders().add("Set-Cookie", cookie.toString());
+    }
 
+    protected String getCookie(HttpExchange exchange) {
+        return exchange.getRequestHeaders()
+                .getOrDefault("Cookie", List.of(""))
+                .get(0);
+    }
 }

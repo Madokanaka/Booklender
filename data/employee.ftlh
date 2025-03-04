@@ -9,6 +9,9 @@
 <body>
 <div class="container py-5">
     <header class="text-center mb-5">
+        <div class="d-flex">
+            <a href="/logout" class="btn btn-danger btn-lg m-2 ms-auto">Выйти</a>
+        </div>
         <h1>Информация о сотруднике</h1>
     </header>
 
@@ -66,6 +69,13 @@
                 </ul>
             </#if>
         </section>
+
+        <section class="book-actions text-center mb-4">
+            <h3>📥 Действия с книгами</h3>
+            <a href="/takeBooks" class="btn btn-success btn-lg m-2">Взять книгу</a>
+            <a href="/returnBooks" class="btn btn-info btn-lg m-2">Вернуть книгу</a>
+        </section>
+
     </main>
 </div>
 

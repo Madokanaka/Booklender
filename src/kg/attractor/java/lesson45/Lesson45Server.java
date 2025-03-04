@@ -5,6 +5,7 @@ import kg.attractor.java.lesson44.Lesson44Server;
 import kg.attractor.java.lesson44.models.Book;
 import kg.attractor.java.lesson44.models.Employee;
 import kg.attractor.java.server.ContentType;
+import kg.attractor.java.server.Cookie;
 import kg.attractor.java.util.JsonUtil;
 import kg.attractor.java.util.Utils;
 
@@ -19,7 +20,8 @@ import java.util.concurrent.ConcurrentHashMap;
 
 public class Lesson45Server extends Lesson44Server {
 
-    private final Map<String, Employee> sessions = new ConcurrentHashMap<>();
+    protected final Map<String, Employee> sessions = new ConcurrentHashMap<>();
+
     public Lesson45Server(String host, int port) throws IOException {
         super(host, port);
 
@@ -49,7 +51,12 @@ public class Lesson45Server extends Lesson44Server {
             String sessionId = UUID.randomUUID().toString();
             sessions.put(sessionId, employee);
 
-            redirect303(exchange, "/profile?sessionId=" + sessionId);
+            Cookie sessionCookie = Cookie.make("sessionId", sessionId);
+            sessionCookie.setMaxAge(600);
+            sessionCookie.setHttpOnly(true);
+            setCookie(exchange, sessionCookie);
+
+            redirect303(exchange, "/profile");
         } else {
             redirect303(exchange, "/login-error");
         }
@@ -61,13 +68,9 @@ public class Lesson45Server extends Lesson44Server {
     }
 
     private void profileGet(HttpExchange exchange) {
-        String query = exchange.getRequestURI().getQuery();
-        String sessionId = null;
-
-        if (query != null) {
-            Map<String, String> queryParams = Utils.parseUrlEncoded(query, "&");
-            sessionId = queryParams.get("sessionId");
-        }
+        String cookieString = getCookie(exchange);
+        Map<String, String> cookies = Cookie.parse(cookieString);
+        String sessionId = cookies.get("sessionId");
 
         Employee loggedInUser = sessionId != null ? sessions.get(sessionId) : null;
 
@@ -96,7 +99,9 @@ public class Lesson45Server extends Lesson44Server {
     }
 
     private void handleRegisterPage(HttpExchange exchange) {
-        sendFile(exchange, makeFilePath("/register/register.ftlh"), ContentType.TEXT_HTML);
+        Map<String, Object> data = new HashMap<>();
+        data.put("error", null);
+        renderTemplate(exchange, "register/register.ftlh", data);
     }
 
     private void handleRegisterPost(HttpExchange exchange) {
@@ -108,6 +113,16 @@ public class Lesson45Server extends Lesson44Server {
         String name = params.get("name");
         String position = params.get("position");
         String password = params.get("password");
+
+        if (email == null || email.isEmpty() ||
+                name == null || name.isEmpty() ||
+                position == null || position.isEmpty() ||
+                password == null || password.isEmpty()) {
+                    Map<String, Object> data = new HashMap<>();
+                    data.put("error", "Все поля должны быть заполнены!");
+                    renderTemplate(exchange, "register/register.ftlh", data);
+                    return;
+        }
 
         if (JsonUtil.getEmployeeByEmail(email) != null) {
             redirect303(exchange, "/register-error");
@@ -134,8 +149,6 @@ public class Lesson45Server extends Lesson44Server {
 
         renderTemplate(exchange, "register/register_result.ftlh", data);
     }
-
-
 
 
 }
