@@ -9,6 +9,9 @@
 <body>
 <div class="container py-5">
     <header class="text-center mb-5">
+        <div class="d-flex">
+            <a href="/logout" class="btn btn-danger btn-lg m-2 ms-auto">Выйти</a>
+        </div>
         <h1>Информация о сотруднике</h1>
     </header>
 
