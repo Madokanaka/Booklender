@@ -33,7 +33,7 @@ public class Lesson44Server extends BasicServer {
         super(host, port);
         registerGet("/sample", this::freemarkerSampleHandler);
         registerGet("/employees", this::employeesHandler);
-        registerGet("/book/.*", this::bookDetailsHandler);
+        registerGet("/book", this::bookDetailsHandler);
         registerGet("/books", this::booksHandler);
         registerGet("/employee/.*", this::employeeDetailsHandler);
         registerGet("/login", this::loginGet);
@@ -85,13 +85,27 @@ public class Lesson44Server extends BasicServer {
 
 
     private void bookDetailsHandler(HttpExchange exchange) {
-        String path = exchange.getRequestURI().getPath();
-        int bookId = Integer.parseInt(path.substring(path.lastIndexOf("/") + 1));
-        Book book = JsonUtil.getBookById(bookId);
+        String queryParams = getQueryParams(exchange);
+        Map<String, String> params = Utils.parseUrlEncoded(queryParams, "&");
         Map<String, Object> dataModel = new HashMap<>();
+        if (!params.containsKey("bookId")) {
+            dataModel.put("errorMessage", "ID книги не указан");
+            renderTemplate(exchange, "error.ftlh", dataModel);
+            return;
+        }
+
+        int bookId = Integer.parseInt(params.get("bookId"));
+        Book book = JsonUtil.getBookById(bookId);
+
+        if (book == null) {
+            dataModel.put("errorMessage", "Книга с указанным ID не найдена");
+            renderTemplate(exchange, "error.ftlh", dataModel);
+            return;
+        }
         dataModel.put("book", book);
         renderTemplate(exchange, "book.ftlh", dataModel);
     }
+
 
     private void freemarkerSampleHandler(HttpExchange exchange) {
         renderTemplate(exchange, "sample.ftlh", getSampleDataModel());

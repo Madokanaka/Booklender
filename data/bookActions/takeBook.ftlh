@@ -24,8 +24,8 @@
                                     <p class="card-text text-muted">Автор: ${book.author}</p>
                                 </div>
                                 <div class="mt-auto">
-                                    <a href="/book/${book.id}" class="btn btn-primary">Подробнее</a>
-                                    <a href="/takeBook/${book.id}" class="btn btn-success ml-2">Взять книгу</a>
+                                    <a href="/book?bookId=${book.id}" class="btn btn-primary">Подробнее</a>
+                                    <a href="/takeBook?bookId=${book.id}" class="btn btn-success ml-2">Взять книгу</a>
                                 </div>
                             </div>
                         </li>
