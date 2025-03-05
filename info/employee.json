@@ -6,8 +6,7 @@
     "email": "ivan.ivanov@example.com",
     "password": "12345",
     "currentBooks": [
-      2,
-      1
+      2
     ],
     "pastBooks": [
       2,
