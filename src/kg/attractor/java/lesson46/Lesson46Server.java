@@ -6,6 +6,7 @@ import kg.attractor.java.lesson44.models.Employee;
 import kg.attractor.java.lesson45.Lesson45Server;
 import kg.attractor.java.server.Cookie;
 import kg.attractor.java.util.JsonUtil;
+import kg.attractor.java.util.Utils;
 
 import java.io.IOException;
 import java.util.HashMap;
@@ -23,6 +24,7 @@ public class Lesson46Server extends Lesson45Server {
         registerGet("/returnBooks", this::returnBooksHandler);
         registerGet("/returnBook/.*", this::returnBookHandler);
         registerGet("/logout", this::logoutHandler);
+        registerGet("/query", this::handleQueryRequest);
     }
 
     private void cookieHandler(HttpExchange exchange) {
@@ -196,6 +198,16 @@ public class Lesson46Server extends Lesson45Server {
         setCookie(exchange, expiredCookie);
 
         redirect303(exchange, "/login");
+    }
+
+    private void handleQueryRequest(HttpExchange exchange) {
+        String query = getQueryParams(exchange);
+        Map<String, String> params = Utils.parseUrlEncoded(query, "&");
+
+        Map<String, Object> data = new HashMap<>();
+        data.put("query", params);
+        renderTemplate(exchange, "query.ftlh", data);
+
     }
 
 }
