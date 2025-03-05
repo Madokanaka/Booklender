@@ -46,7 +46,7 @@ public class Lesson44Server extends BasicServer {
         registerGet("/profile", this::profileGet);
         registerGet("/cookie", this::cookieHandler);
         registerGet("/takeBooks", this::takeBooksHandler);
-        registerGet("/takeBook/.*", this::takeBookHandler);
+        registerGet("/takeBook", this::takeBookHandler);
         registerGet("/returnBooks", this::returnBooksHandler);
         registerGet("/returnBook/.*", this::returnBookHandler);
         registerGet("/logout", this::logoutHandler);
@@ -389,8 +389,7 @@ public class Lesson44Server extends BasicServer {
         String sessionId = cookies.get("sessionId");
         Employee emp = sessionId != null ? sessions.get(sessionId) : null;
         Map<String, Object> data = new HashMap<>();
-        String path = exchange.getRequestURI().getPath();
-        String bookIdString = path.split("/")[2];
+
 
         if (emp == null) {
             data.put("isAuthorized", false);
@@ -398,23 +397,36 @@ public class Lesson44Server extends BasicServer {
             renderTemplate(exchange, "bookActions/actionBookResult.ftlh", data);
             return;
         }
+        data.put("isAuthorized", true);
 
-        int bookId = Integer.parseInt(bookIdString);
+        String queryParams = getQueryParams(exchange);
+        Map<String, String> params = Utils.parseUrlEncoded(queryParams, "&");
+        if (!params.containsKey("bookId")) {
+            data.put("errorMessage", "ID книги не указан");
+            renderTemplate(exchange, "bookActions/actionBookResult.ftlh", data);
+            return;
+        }
+
+        int bookId;
+        try {
+            bookId = Integer.parseInt(params.get("bookId"));
+        } catch (NumberFormatException e) {
+            data.put("errorMessage", "ID книги не является цифровым значением");
+            renderTemplate(exchange, "bookActions/actionBookResult.ftlh", data);
+            return;
+        }
+
         Book book = JsonUtil.getBookById(bookId);
 
         if (book == null) {
-            data.put("isAuthorized", true);
             data.put("message", "Книга не найдена.");
         } else if (emp.getCurrentBooks().size() >= 2) {
-            data.put("isAuthorized", true);
             data.put("message", "Вы не можете взять больше двух книг.");
         } else if (!book.isAvailable()) {
-            data.put("isAuthorized", true);
             data.put("message", "Эта книга уже была взята.");
         } else {
             emp.getCurrentBooks().add(bookId);
             book.setAvailable(false);
-            data.put("isAuthorized", true);
             data.put("message", "Книга успешно взята!");
             JsonUtil.writeEmployeesToFile();
             JsonUtil.writeBooksToFile();

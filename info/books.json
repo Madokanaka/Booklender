@@ -3,7 +3,7 @@
     "id": 1,
     "title": "Clean Code",
     "author": "Robert C. Martin",
-    "available": true,
+    "available": false,
     "imagePath": "https://m.media-amazon.com/images/I/51E2055ZGUL.jpg",
     "description": "A guide to writing clean, efficient, and maintainable code. It covers best practices for software development and emphasizes readability and simplicity."
   },
