@@ -160,62 +160,9 @@ public abstract class BasicServer {
     }
 
     private void handleIncomingServerRequests(HttpExchange exchange) {
-        String path = exchange.getRequestURI().getPath();
-
-        RouteHandler route = getRoutes().get(makeKey(exchange));
-
-        if (route != null) {
-            route.handle(exchange);
-        } else {
-            route = findDynamicRoute(path);
-            if (route != null) {
-                route.handle(exchange);
-            } else {
-                respond404(exchange);
-            }
-        }
+        RouteHandler route = getRoutes().getOrDefault(makeKey(exchange), this::respond404);
+        route.handle(exchange);
     }
-
-    private RouteHandler findDynamicRoute(String path) {
-        for (Map.Entry<String, RouteHandler> entry : getRoutes().entrySet()) {
-            String route = entry.getKey();
-
-            if (route.startsWith("GET /book/") && path.matches("/book/\\d+"))
-            {
-                int bookId = Integer.parseInt(path.substring(path.lastIndexOf("/") + 1));
-                Book book = JsonUtil.getBookById(bookId);
-                if (book != null) {
-                    return entry.getValue();
-                }
-            }
-
-            if (route.startsWith("GET /employee/") && path.matches("/employee/\\d+")) {
-                int employeeId = Integer.parseInt(path.substring(path.lastIndexOf("/") + 1));
-                Employee employee = JsonUtil.getEmployeeById(employeeId);
-                if (employee != null) {
-                    return entry.getValue();
-                }
-            }
-
-            if (route.startsWith("GET /takeBook/") && path.matches("/takeBook/\\d+")) {
-                int bookId = Integer.parseInt(path.substring(path.lastIndexOf("/") + 1));
-                Book book = JsonUtil.getBookById(bookId);
-                if (book != null) {
-                    return entry.getValue();
-                }
-            }
-
-            if (route.startsWith("GET /returnBook/") && path.matches("/returnBook/\\d+")) {
-                int bookId = Integer.parseInt(path.substring(path.lastIndexOf("/") + 1));
-                Book book = JsonUtil.getBookById(bookId);
-                if (book != null) {
-                    return entry.getValue();
-                }
-            }
-        }
-        return null;
-    }
-
 
     public final void start() {
         server.start();
