@@ -94,7 +94,8 @@ public abstract class BasicServer {
     }
 
     protected final void registerPost(String route, RouteHandler handler) {
-    registerGenericHandler("POST", route, handler);}
+        registerGenericHandler("POST", route, handler);
+    }
 
 
     private void registerGenericHandler(String method, String route, RouteHandler handler) {
