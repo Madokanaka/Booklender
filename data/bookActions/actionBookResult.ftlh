@@ -16,13 +16,6 @@
                 ${message}
             </div>
         </#if>
-
-        <#if message?? && message?contains("не найдена") || message?contains("не можете") || message?contains("не доступна")>
-            <div class="alert alert-danger" role="alert">
-                ${message}
-            </div>
-        </#if>
-        <a href="/takeBooks" class="btn btn-secondary">Вернуться к списку книг</a>
         <a href="/profile" class="btn btn-primary">Перейти в профиль</a>
     <#else>
         <div class="alert alert-danger" role="alert">

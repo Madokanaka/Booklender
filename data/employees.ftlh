@@ -23,7 +23,7 @@
                                 <li>${book.title}</li>
                             </#list>
                         </ul>
-                        <a href="/employee/${employee.id}" class="btn btn-primary mt-3">Подробнее</a>
+                        <a href="/employee?employeeId=${employee.id}" class="btn btn-primary mt-3">Подробнее</a>
                     </div>
                 </div>
             </div>

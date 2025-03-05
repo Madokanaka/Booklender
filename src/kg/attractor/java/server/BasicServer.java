@@ -2,9 +2,7 @@ package kg.attractor.java.server;
 
 import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpServer;
-import kg.attractor.java.lesson44.models.Book;
-import kg.attractor.java.lesson44.models.Employee;
-import kg.attractor.java.util.JsonUtil;
+
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -19,6 +17,7 @@ import java.nio.file.Path;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.stream.Collectors;
 
 public abstract class BasicServer {
@@ -34,6 +33,7 @@ public abstract class BasicServer {
     }
 
     private static String makeKey(String method, String route) {
+        route = ensureStartsWithSlash(route);
         return String.format("%s %s", method.toUpperCase(), route);
     }
 
@@ -41,10 +41,18 @@ public abstract class BasicServer {
         String method = exchange.getRequestMethod();
         String path = exchange.getRequestURI().getPath();
 
+        if (path.endsWith("/") && path.length() > 1) {
+            path = path.substring(0, path.length() - 1);
+        }
         int index = path.lastIndexOf(".");
         String extOrPath = index != -1 ? path.substring(index).toLowerCase() : path;
 
         return makeKey(method, extOrPath);
+    }
+
+    private static String ensureStartsWithSlash(String route) {
+        if (route.startsWith(".")) return route;
+        return route.startsWith("/") ? route : "/" + route;
     }
 
     private static void setContentType(HttpExchange exchange, ContentType type) {
@@ -80,10 +88,18 @@ public abstract class BasicServer {
     }
 
     protected final void registerGet(String route, RouteHandler handler) {
-        getRoutes().put("GET " + route, handler);
+        registerGenericHandler("GET", route, handler);
     }
 
-    protected final void registerPost(String route, RouteHandler handler) { getRoutes().put("POST " + route, handler); }
+    protected final void registerPost(String route, RouteHandler handler) {
+        registerGenericHandler("POST", route, handler);
+    }
+
+
+    private void registerGenericHandler(String method, String route, RouteHandler handler) {
+        getRoutes().put(makeKey(method, route), handler);
+
+    }
 
     protected final void registerFileHandler(String fileExt, ContentType type) {
         registerGet(fileExt, exchange -> sendFile(exchange, makeFilePath(exchange), type));
@@ -142,62 +158,9 @@ public abstract class BasicServer {
     }
 
     private void handleIncomingServerRequests(HttpExchange exchange) {
-        String path = exchange.getRequestURI().getPath();
-
-        RouteHandler route = getRoutes().get(makeKey(exchange));
-
-        if (route != null) {
-            route.handle(exchange);
-        } else {
-            route = findDynamicRoute(path);
-            if (route != null) {
-                route.handle(exchange);
-            } else {
-                respond404(exchange);
-            }
-        }
+        RouteHandler route = getRoutes().getOrDefault(makeKey(exchange), this::respond404);
+        route.handle(exchange);
     }
-
-    private RouteHandler findDynamicRoute(String path) {
-        for (Map.Entry<String, RouteHandler> entry : getRoutes().entrySet()) {
-            String route = entry.getKey();
-
-            if (route.startsWith("GET /book/") && path.matches("/book/\\d+"))
-            {
-                int bookId = Integer.parseInt(path.substring(path.lastIndexOf("/") + 1));
-                Book book = JsonUtil.getBookById(bookId);
-                if (book != null) {
-                    return entry.getValue();
-                }
-            }
-
-            if (route.startsWith("GET /employee/") && path.matches("/employee/\\d+")) {
-                int employeeId = Integer.parseInt(path.substring(path.lastIndexOf("/") + 1));
-                Employee employee = JsonUtil.getEmployeeById(employeeId);
-                if (employee != null) {
-                    return entry.getValue();
-                }
-            }
-
-            if (route.startsWith("GET /takeBook/") && path.matches("/takeBook/\\d+")) {
-                int bookId = Integer.parseInt(path.substring(path.lastIndexOf("/") + 1));
-                Book book = JsonUtil.getBookById(bookId);
-                if (book != null) {
-                    return entry.getValue();
-                }
-            }
-
-            if (route.startsWith("GET /returnBook/") && path.matches("/returnBook/\\d+")) {
-                int bookId = Integer.parseInt(path.substring(path.lastIndexOf("/") + 1));
-                Book book = JsonUtil.getBookById(bookId);
-                if (book != null) {
-                    return entry.getValue();
-                }
-            }
-        }
-        return null;
-    }
-
 
     public final void start() {
         server.start();
@@ -234,5 +197,10 @@ public abstract class BasicServer {
         return exchange.getRequestHeaders()
                 .getOrDefault("Cookie", List.of(""))
                 .get(0);
+    }
+
+    protected String getQueryParams(HttpExchange exchange) {
+        String queryParams = exchange.getRequestURI().getQuery();
+        return Objects.nonNull(queryParams) ? queryParams : "";
     }
 }
