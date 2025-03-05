@@ -35,7 +35,7 @@ public class Lesson44Server extends BasicServer {
         registerGet("/employees", this::employeesHandler);
         registerGet("/book", this::bookDetailsHandler);
         registerGet("/books", this::booksHandler);
-        registerGet("/employee/.*", this::employeeDetailsHandler);
+        registerGet("/employee", this::employeeDetailsHandler);
         registerGet("/login", this::loginGet);
         registerPost("/login", this::loginPost);
         registerGet("/login-error", this::loginError);
@@ -94,7 +94,15 @@ public class Lesson44Server extends BasicServer {
             return;
         }
 
-        int bookId = Integer.parseInt(params.get("bookId"));
+        int bookId;
+        try {
+            bookId = Integer.parseInt(params.get("bookId"));
+        } catch (NumberFormatException e) {
+            dataModel.put("errorMessage", "ID книги не является цифровым значением");
+            renderTemplate(exchange, "error.ftlh", dataModel);
+            return;
+        }
+
         Book book = JsonUtil.getBookById(bookId);
 
         if (book == null) {
@@ -166,10 +174,31 @@ public class Lesson44Server extends BasicServer {
     }
 
     private void employeeDetailsHandler(HttpExchange exchange) {
-        String path = exchange.getRequestURI().getPath();
-        int employeeId = Integer.parseInt(path.substring(path.lastIndexOf("/") + 1));
+        String queryParams = getQueryParams(exchange);
+        Map<String, String> params = Utils.parseUrlEncoded(queryParams, "&");
+        Map<String, Object> dataModel = new HashMap<>();
+        if (!params.containsKey("employeeId")) {
+            dataModel.put("errorMessage", "ID пользователя не указан");
+            renderTemplate(exchange, "error.ftlh", dataModel);
+            return;
+        }
+
+        int employeeId;
+        try {
+            employeeId = Integer.parseInt(params.get("employeeId"));
+        } catch (NumberFormatException e) {
+            dataModel.put("errorMessage", "ID пользователя не является цифровым значением");
+            renderTemplate(exchange, "error.ftlh", dataModel);
+            return;
+        }
 
         Employee employee = JsonUtil.getEmployeeById(employeeId);
+
+        if (employee == null) {
+            dataModel.put("errorMessage", "Пользователь с указанным ID не найден");
+            renderTemplate(exchange, "error.ftlh", dataModel);
+            return;
+        }
         List<Book> currentBooks = employee.getCurrentBooks().stream()
                 .map(JsonUtil::getBookById)
                 .toList();
@@ -178,7 +207,6 @@ public class Lesson44Server extends BasicServer {
                 .map(JsonUtil::getBookById)
                 .toList();
 
-        Map<String, Object> dataModel = new HashMap<>();
         dataModel.put("employee", employee);
         dataModel.put("currentBooks", currentBooks);
         dataModel.put("pastBooks", pastBooks);
