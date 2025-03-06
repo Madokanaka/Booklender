@@ -25,7 +25,10 @@
                                 </div>
                                 <div class="mt-auto">
                                     <a href="/book?bookId=${book.id}" class="btn btn-primary">Подробнее</a>
-                                    <a href="/takeBook?bookId=${book.id}" class="btn btn-success ml-2">Взять книгу</a>
+                                    <form action="/takeBook" method="POST" class="d-inline-block">
+                                        <input type="hidden" name="bookId" value="${book.id}">
+                                        <button type="submit" class="btn btn-success ml-2">Взять книгу</button>
+                                    </form>
                                 </div>
                             </div>
                         </li>
