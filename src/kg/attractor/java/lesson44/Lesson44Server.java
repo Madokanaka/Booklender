@@ -46,9 +46,9 @@ public class Lesson44Server extends BasicServer {
         registerGet("/profile", this::profileGet);
         registerGet("/cookie", this::cookieHandler);
         registerGet("/takeBooks", this::takeBooksHandler);
-        registerGet("/takeBook", this::takeBookHandler);
+        registerPost("/takeBook", this::takeBookHandler);
         registerGet("/returnBooks", this::returnBooksHandler);
-        registerGet("/returnBook", this::returnBookHandler);
+        registerPost("/returnBook", this::returnBookHandler);
         registerGet("/logout", this::logoutHandler);
         registerGet("/query", this::handleQueryRequest);
     }
@@ -399,7 +399,7 @@ public class Lesson44Server extends BasicServer {
         }
         data.put("isAuthorized", true);
 
-        String queryParams = getQueryParams(exchange);
+        String queryParams = getBody(exchange);
         Map<String, String> params = Utils.parseUrlEncoded(queryParams, "&");
         if (!params.containsKey("bookId")) {
             data.put("message", "ID книги не указан");
@@ -475,7 +475,7 @@ public class Lesson44Server extends BasicServer {
         }
         data.put("isAuthorized", true);
 
-        String queryParams = getQueryParams(exchange);
+        String queryParams = getBody(exchange);
         Map<String, String> params = Utils.parseUrlEncoded(queryParams, "&");
         if (!params.containsKey("bookId")) {
             data.put("message", "ID книги не указан.");
